@@ -54,8 +54,11 @@
         .btn-success { background: #10b981; color: var(--white); }
         .btn-success:hover { background: #059669; }
         .btn-danger { background: #ef4444; color: var(--white); }
+        .btn-danger:hover { background: #dc2626; }
         .btn-secondary { background: var(--white); color: var(--primary); border: 2px solid var(--primary); }
         .btn-secondary:hover { background: var(--primary); color: var(--white); }
+        .btn-warning { background: #f59e0b; color: var(--white); }
+        .btn-warning:hover { background: #d97706; }
         .table-container { overflow-x: auto; margin-top: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border); }
         table { width: 100%; border-collapse: collapse; min-width: 600px; }
         table th, table td { border: 1px solid var(--border); padding: 0.75rem; font-size: 0.9rem; }
@@ -78,9 +81,11 @@
         .login-box .form-group { margin-bottom: 1rem; }
         .login-box .btn-primary, .login-box .btn-secondary { width: 100%; justify-content: center; padding: 0.8rem; margin-top: 0.5rem; }
         .login-error { padding: 0.75rem; border-radius: var(--radius-sm); font-size: 0.85rem; margin-top: 1rem; display: none; text-align: center; }
-        .user-info { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-light); }
-        .user-info strong { color: var(--primary); }
-        .logout-btn { background: none; border: none; color: #ef4444; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+        .user-info { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; font-size: 0.85rem; color: var(--text-light); padding: 0.5rem; max-width: 100%; word-break: break-word; text-align: center; }
+        .user-info strong { color: var(--primary); font-size: 0.8rem; }
+        .logout-btn { background: none; border: none; color: #ef4444; cursor: pointer; font-weight: 600; font-size: 0.85rem; margin-top: 0.5rem; }
+        .import-info { background: #fef3c7; padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem; border-left: 4px solid #f59e0b; font-size: 0.9rem; }
+        .import-info code { background: #fff; padding: 0.2rem 0.4rem; border-radius: 4px; font-family: monospace; }
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.active { transform: translateX(0); }
@@ -131,7 +136,7 @@
         </nav>
         <div class="sidebar-footer">
             <div id="userInfo" class="user-info"></div>
-            <button class="logout-btn" onclick="handleLogout()" style="margin-top: 0.5rem;"> Logout</button>
+            <button class="logout-btn" onclick="handleLogout()"> Logout</button>
         </div>
     </aside>
 
@@ -157,9 +162,14 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Kelas Aktif</label>
-                        <select id="classSelect" onchange="loadClassData()">
-                            <option value="">-- Memuat kelas... --</option>
-                        </select>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <select id="classSelect" onchange="loadClassData()" style="flex: 1;">
+                                <option value="">-- Pilih kelas --</option>
+                            </select>
+                            <button class="btn btn-danger" onclick="deleteClass()" title="Hapus kelas yang dipilih" style="white-space: nowrap;">
+                                🗑️ Hapus
+                            </button>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Tambah Kelas Baru</label>
@@ -215,12 +225,29 @@
             </div>
 
             <div class="content-card">
-                <h2>💾 4. Simpan & Ekspor</h2>
+                <h2>💾 4. Import & Ekspor Excel</h2>
+                
+                <div class="import-info">
+                    <strong>📋 Format File Excel untuk Import:</strong><br>
+                    Baris pertama harus berisi header: <code>Nama Siswa</code>, <code>Tugas</code>, <code>UH</code>, <code>UTS</code>, <code>UAS</code><br>
+                    <br>
+                    <strong>Contoh:</strong><br>
+                    <table style="margin-top: 0.5rem; font-size: 0.85rem;">
+                        <tr><th>Nama Siswa</th><th>Tugas</th><th>UH</th><th>UTS</th><th>UAS</th></tr>
+                        <tr><td>Ahmad Fauzi</td><td>85</td><td>78</td><td>80</td><td>82</td></tr>
+                        <tr><td>Budi Santoso</td><td>90</td><td>88</td><td>85</td><td>87</td></tr>
+                    </table>
+                    <br>
+                    <button class="btn btn-warning" onclick="downloadTemplate()" style="margin-top: 0.5rem;">
+                        📥 Download Template Excel
+                    </button>
+                </div>
+
                 <div class="success-box">✅ Data otomatis tersimpan ke cloud setiap kali Anda mengedit nilai.</div>
                 <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                     <input type="file" id="importFile" style="display: none;" accept=".xlsx, .xls" onchange="handleImport(this)">
-                    <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()"> Import dari Excel</button>
-                    <button class="btn btn-success" onclick="exportToExcel()"> Ekspor ke Excel</button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">📥 Import dari Excel</button>
+                    <button class="btn btn-success" onclick="exportToExcel()">📤 Ekspor ke Excel</button>
                 </div>
             </div>
         </section>
@@ -232,7 +259,7 @@
         (function() {
             'use strict';
             
-            const SUPABASE_URL = 'https://pubzczmhadqglvoygqgd.supabase.co';
+            const SUPABASE_URL = 'https://pubzczmhadqglvoyqggd.supabase.co';
             const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1Ynpjem1oYWRxZ2x2b3lncWdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MzQxODIsImV4cCI6MjEwNDMxMDE4Mn0.Ym8t2TaZtY1H-TY3NnK7QIjlRKmtk-kCHcw91UzWdpA';
             
             const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -295,19 +322,20 @@
                 errorDiv.textContent = 'Mengirim link reset...';
                 errorDiv.style.display = 'block';
                 
-                const redirectUrl = window.location.origin + window.location.pathname;
-                const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                    redirectTo: redirectUrl
-                });
-                
-                if (error) {
-                    errorDiv.style.background = '#fee2e2';
-                    errorDiv.style.color = '#991b1b';
-                    errorDiv.textContent = '❌ Gagal: ' + error.message;
-                } else {
+                try {
+                    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                        redirectTo: 'https://olahnilaidigital.github.io/#access_token'
+                    });
+                    
+                    if (error) throw error;
+                    
                     errorDiv.style.background = '#d1fae5';
                     errorDiv.style.color = '#065f46';
                     errorDiv.textContent = '✅ Link reset password telah dikirim!';
+                } catch (error) {
+                    errorDiv.style.background = '#fee2e2';
+                    errorDiv.style.color = '#991b1b';
+                    errorDiv.textContent = ' Gagal: ' + error.message;
                 }
             };
             
@@ -319,17 +347,12 @@
             };
             
             function showApp() {
-    document.getElementById('loginScreen').style.display = 'none';
-    
-    // Ambil hanya bagian sebelum @ dari email
-    const emailParts = currentUser.email.split('@');
-    const displayName = emailParts[0]; // Hanya "tegarpambuditama48"
-    
-    document.getElementById('userInfo').innerHTML = 
-        '👤 <strong title="' + currentUser.email + '">' + displayName + '</strong>';
-    
-    loadClasses();
-}
+                document.getElementById('loginScreen').style.display = 'none';
+                const emailParts = currentUser.email.split('@');
+                const displayName = emailParts[0];
+                document.getElementById('userInfo').innerHTML = '<strong title="' + currentUser.email + '">' + displayName + '</strong>';
+                loadClasses();
+            }
             
             window.loadClasses = async function() {
                 const { data, error } = await supabase
@@ -371,6 +394,40 @@
                 document.getElementById('newClassSubject').value = '';
                 alert('✅ Kelas berhasil ditambahkan!');
                 loadClasses();
+            };
+            
+            window.deleteClass = async function() {
+                const classId = document.getElementById('classSelect').value;
+                const classSelect = document.getElementById('classSelect');
+                const className = classSelect.selectedOptions[0]?.text || 'kelas ini';
+                
+                if (!classId) {
+                    alert('Pilih kelas yang ingin dihapus!');
+                    return;
+                }
+                
+                const confirmMsg = 'Apakah Anda yakin ingin menghapus "' + className + '"?\n\n⚠️ PERHATIAN:\n• Semua data siswa di kelas ini akan dihapus\n• Semua nilai siswa akan dihapus\n• Tindakan ini tidak dapat dibatalkan!';
+                
+                if (!confirm(confirmMsg)) return;
+                
+                try {
+                    const { error } = await supabase.from('classes').delete().eq('id', classId);
+                    
+                    if (error) throw error;
+                    
+                    alert('✅ Kelas berhasil dihapus!');
+                    document.getElementById('newClassName').value = '';
+                    document.getElementById('newClassSubject').value = '';
+                    currentClassId = null;
+                    students = [];
+                    grades = {};
+                    renderTable();
+                    loadClasses();
+                    
+                } catch (error) {
+                    console.error('Error deleting class:', error);
+                    alert('❌ Gagal menghapus kelas: ' + error.message);
+                }
             };
             
             window.loadClassData = async function() {
@@ -526,10 +583,42 @@
                 }).join('');
             }
             
+            // ============================================
+            // FITUR DOWNLOAD TEMPLATE EXCEL
+            // ============================================
+            window.downloadTemplate = function() {
+                const templateData = [
+                    { 'Nama Siswa': 'Ahmad Fauzi', 'Tugas': 85, 'UH': 78, 'UTS': 80, 'UAS': 82 },
+                    { 'Nama Siswa': 'Budi Santoso', 'Tugas': 90, 'UH': 88, 'UTS': 85, 'UAS': 87 },
+                    { 'Nama Siswa': 'Citra Lestari', 'Tugas': 78, 'UH': 82, 'UTS': 80, 'UAS': 85 }
+                ];
+                
+                const ws = XLSX.utils.json_to_sheet(templateData);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Template Nilai");
+                
+                // Atur lebar kolom
+                ws['!cols'] = [
+                    { wch: 25 }, // Nama Siswa
+                    { wch: 10 }, // Tugas
+                    { wch: 10 }, // UH
+                    { wch: 10 }, // UTS
+                    { wch: 10 }  // UAS
+                ];
+                
+                XLSX.writeFile(wb, 'Template_Import_Nilai.xlsx');
+            };
+            
+            // ============================================
+            // FITUR IMPORT DARI EXCEL (DIPERBAIKI)
+            // ============================================
             window.handleImport = function(input) {
                 const file = input.files[0];
-                if (!file || !currentClassId) {
-                    if (!currentClassId) alert('Pilih kelas terlebih dahulu!');
+                if (!file) return;
+                
+                if (!currentClassId) {
+                    alert('⚠️ Pilih kelas terlebih dahulu sebelum import!');
+                    input.value = '';
                     return;
                 }
                 
@@ -538,34 +627,115 @@
                     try {
                         const data = new Uint8Array(e.target.result);
                         const workbook = XLSX.read(data, { type: 'array' });
-                        const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+                        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                        const jsonData = XLSX.utils.sheet_to_json(firstSheet);
                         
-                        if (!confirm('Import ' + jsonData.length + ' data siswa ke kelas ini?')) return;
+                        if (jsonData.length === 0) {
+                            alert('⚠️ File Excel kosong!');
+                            input.value = '';
+                            return;
+                        }
+                        
+                        // Validasi header
+                        const firstRow = jsonData[0];
+                        const hasNama = firstRow['Nama Siswa'] !== undefined || firstRow['Nama'] !== undefined;
+                        
+                        if (!hasNama) {
+                            alert('️ Format file tidak sesuai!\n\nPastikan baris pertama berisi header:\nNama Siswa, Tugas, UH, UTS, UAS\n\nDownload template untuk contoh format yang benar.');
+                            input.value = '';
+                            return;
+                        }
+                        
+                        const confirmMsg = 'Ditemukan ' + jsonData.length + ' data siswa.\n\n' +
+                                          '• Siswa yang sudah ada akan diupdate nilainya\n' +
+                                          '• Siswa baru akan ditambahkan\n\n' +
+                                          'Lanjutkan import?';
+                        
+                        if (!confirm(confirmMsg)) {
+                            input.value = '';
+                            return;
+                        }
+                        
+                        let successCount = 0;
+                        let errorCount = 0;
                         
                         for (const row of jsonData) {
-                            const nama = row['Nama Siswa'] || row['Nama'] || 'Tanpa Nama';
-                            const { data: student, error: errS } = await supabase
-                                .from('students')
-                                .insert({ class_id: currentClassId, nama_siswa: nama })
-                                .select()
-                                .single();
-                            
-                            if (errS) continue;
-                            
-                            await supabase.from('grades').upsert({
-                                student_id: student.id,
-                                tugas: parseFloat(row['Tugas'] || row['Nilai Tugas'] || 0),
-                                uh: parseFloat(row['UH'] || row['Nilai UH'] || 0),
-                                uts: parseFloat(row['UTS'] || row['Nilai UTS'] || 0),
-                                uas: parseFloat(row['UAS'] || row['Nilai UAS'] || 0),
-                                bobot_tugas: bobot.tugas, bobot_uh: bobot.uh,
-                                bobot_uts: bobot.uts, bobot_uas: bobot.uas
-                            });
+                            try {
+                                const nama = row['Nama Siswa'] || row['Nama'] || 'Tanpa Nama';
+                                const tugas = parseFloat(row['Tugas'] || row['Nilai Tugas'] || 0) || 0;
+                                const uh = parseFloat(row['UH'] || row['Nilai UH'] || 0) || 0;
+                                const uts = parseFloat(row['UTS'] || row['Nilai UTS'] || 0) || 0;
+                                const uas = parseFloat(row['UAS'] || row['Nilai UAS'] || 0) || 0;
+                                
+                                // Cari siswa yang sudah ada berdasarkan nama
+                                const existingStudent = students.find(s => 
+                                    s.nama_siswa.toLowerCase() === nama.toLowerCase()
+                                );
+                                
+                                let studentId;
+                                
+                                if (existingStudent) {
+                                    // Update nilai siswa yang sudah ada
+                                    studentId = existingStudent.id;
+                                } else {
+                                    // Tambah siswa baru
+                                    const { data: newStudent, error: errInsert } = await supabase
+                                        .from('students')
+                                        .insert({ class_id: currentClassId, nama_siswa: nama })
+                                        .select()
+                                        .single();
+                                    
+                                    if (errInsert) throw errInsert;
+                                    studentId = newStudent.id;
+                                    students.push(newStudent);
+                                }
+                                
+                                // Simpan/update nilai
+                                const { error: errGrade } = await supabase.from('grades').upsert({
+                                    student_id: studentId,
+                                    tugas: tugas,
+                                    uh: uh,
+                                    uts: uts,
+                                    uas: uas,
+                                    bobot_tugas: bobot.tugas,
+                                    bobot_uh: bobot.uh,
+                                    bobot_uts: bobot.uts,
+                                    bobot_uas: bobot.uas
+                                });
+                                
+                                if (errGrade) throw errGrade;
+                                
+                                // Update local state
+                                if (!grades[studentId]) {
+                                    grades[studentId] = {};
+                                }
+                                grades[studentId] = {
+                                    tugas: tugas,
+                                    uh: uh,
+                                    uts: uts,
+                                    uas: uas
+                                };
+                                
+                                successCount++;
+                                
+                            } catch (err) {
+                                console.error('Error importing row:', err);
+                                errorCount++;
+                            }
                         }
-                        alert('✅ Import berhasil!');
-                        loadClassData();
+                        
+                        let resultMsg = '✅ Import selesai!\n\n';
+                        resultMsg += 'Berhasil: ' + successCount + ' siswa\n';
+                        if (errorCount > 0) {
+                            resultMsg += 'Gagal: ' + errorCount + ' siswa\n';
+                        }
+                        
+                        alert(resultMsg);
+                        renderTable();
+                        
                     } catch (err) {
-                        alert('Gagal import: ' + err.message);
+                        console.error('Import error:', err);
+                        alert('❌ Gagal membaca file: ' + err.message);
                     }
                     input.value = '';
                 };
