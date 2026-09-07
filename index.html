@@ -7,8 +7,11 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Ctext x='50' y='66' font-family='Montserrat,Arial,sans-serif' font-size='42' font-weight='800' fill='%23ffffff' text-anchor='middle' letter-spacing='-1'%3ERBI%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Library Supabase & SheetJS (Hanya 1x masing-masing) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -84,8 +87,8 @@
         .login-box h2 { color: var(--primary); margin-bottom: 0.5rem; text-align: center; }
         .login-box .subtitle { color: var(--text-light); text-align: center; margin-bottom: 2rem; font-size: 0.9rem; }
         .login-box .form-group { margin-bottom: 1rem; }
-        .login-box .btn-primary { width: 100%; justify-content: center; padding: 0.8rem; margin-top: 1rem; }
-        .login-error { background: #fee2e2; color: #991b1b; padding: 0.75rem; border-radius: var(--radius-sm); font-size: 0.85rem; margin-top: 1rem; display: none; }
+        .login-box .btn-primary, .login-box .btn-secondary { width: 100%; justify-content: center; padding: 0.8rem; margin-top: 0.5rem; }
+        .login-error { padding: 0.75rem; border-radius: var(--radius-sm); font-size: 0.85rem; margin-top: 1rem; display: none; text-align: center; }
         .user-info { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-light); }
         .user-info strong { color: var(--primary); }
         .logout-btn { background: none; border: none; color: #ef4444; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
@@ -119,9 +122,9 @@
                 <svg viewBox="0 0 24 24"><path d="M11 7L9.6 8.4l2.6 2.6H2v2h10.2l-2.6 2.6L11 17l5-5-5-5zm9 12h-8v2h8c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-8v2h8v14z"/></svg>
                 Masuk
             </button>
-			<button class="btn btn-secondary" onclick="handleForgotPassword()" style="width: 100%; margin-top: 0.5rem;">
-  🔓 Lupa Password?
-</button>
+            <button class="btn btn-secondary" onclick="handleForgotPassword()">
+                🔓 Lupa Password?
+            </button>
             <div class="login-error" id="loginError"></div>
         </div>
     </div>
@@ -163,7 +166,6 @@
         </section>
 
         <section class="content-section">
-            <!-- Pilih Kelas -->
             <div class="content-card">
                 <h2>📚 1. Pilih Kelas</h2>
                 <div class="form-grid">
@@ -184,7 +186,6 @@
                 </div>
             </div>
 
-            <!-- Bobot Nilai -->
             <div class="content-card">
                 <h2>⚙️ 2. Pengaturan Bobot Nilai (%)</h2>
                 <div class="info-box">Perubahan bobot akan otomatis memperbarui Nilai Akhir semua siswa di kelas ini.</div>
@@ -197,7 +198,6 @@
                 <div id="bobotWarning" class="warning-box">⚠️ Total bobot bukan 100%.</div>
             </div>
 
-            <!-- Tabel Nilai -->
             <div class="content-card">
                 <h2>📝 3. Input Nilai Siswa</h2>
                 <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
@@ -228,7 +228,6 @@
                 </div>
             </div>
 
-            <!-- Ekspor/Import -->
             <div class="content-card">
                 <h2>💾 4. Simpan & Ekspor</h2>
                 <div class="success-box">✅ Data otomatis tersimpan ke cloud setiap kali Anda mengedit nilai.</div>
@@ -245,22 +244,21 @@
 
     <script>
         // ============================================
-        // KONFIGURASI SUPABASE - GANTI DENGAN MILIK ANDA
+        // 1. KONFIGURASI SUPABASE
         // ============================================
         const SUPABASE_URL = 'https://pubzczmhadqglvoyqggd.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1Ynpjem1oYWRxZ2x2b3lncWdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MzQxODIsImV4cCI6MjEwNDMxMDE4Mn0.Ym8t2TaZtY1H-TY3NnK7QIjlRKmtk-kCHcw91UzWdpA'; // <-- GANTI INI!
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1Ynpjem1oYWRxZ2x2b3lncWdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MzQxODIsImV4cCI6MjEwNDMxMDE4Mn0.Ym8t2TaZtY1H-TY3NnK7QIjlRKmtk-kCHcw91UzWdpA';
         
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         
-        // State aplikasi
         let currentUser = null;
         let currentClassId = null;
         let students = [];
-        let grades = {}; // Map: studentId -> {tugas, uh, uts, uas}
+        let grades = {};
         let bobot = { tugas: 20, uh: 30, uts: 20, uas: 30 };
         
         // ============================================
-        // 1. AUTENTIKASI
+        // 2. AUTENTIKASI
         // ============================================
         async function checkSession() {
             const { data: { session } } = await supabase.auth.getSession();
@@ -274,6 +272,10 @@
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
             const errorDiv = document.getElementById('loginError');
+            
+            // Reset style error div
+            errorDiv.style.background = '#fee2e2';
+            errorDiv.style.color = '#991b1b';
             
             if (!email || !password) {
                 errorDiv.textContent = 'Email dan password harus diisi!';
@@ -293,6 +295,42 @@
             currentUser = data.user;
             showApp();
         }
+
+        // FUNGSI YANG SEBELUMNYA HILANG (SUDAH DITAMBAHKAN)
+        async function handleForgotPassword() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const errorDiv = document.getElementById('loginError');
+            
+            if (!email) {
+                errorDiv.style.background = '#fee2e2';
+                errorDiv.style.color = '#991b1b';
+                errorDiv.textContent = 'Masukkan email Anda terlebih dahulu!';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            errorDiv.style.background = '#eff6ff';
+            errorDiv.style.color = '#1e40af';
+            errorDiv.textContent = 'Mengirim link reset...';
+            errorDiv.style.display = 'block';
+
+            // Redirect otomatis ke URL halaman ini (aman untuk GitHub Pages maupun localhost)
+            const redirectUrl = window.location.origin + window.location.pathname;
+
+            const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: redirectUrl
+            });
+            
+            if (error) {
+                errorDiv.style.background = '#fee2e2';
+                errorDiv.style.color = '#991b1b';
+                errorDiv.textContent = '❌ Gagal: ' + error.message;
+            } else {
+                errorDiv.style.background = '#d1fae5';
+                errorDiv.style.color = '#065f46';
+                errorDiv.textContent = '✅ Link reset password telah dikirim ke email Anda. Cek inbox/spam.';
+            }
+        }
         
         async function handleLogout() {
             if (confirm('Yakin ingin logout?')) {
@@ -308,7 +346,7 @@
         }
         
         // ============================================
-        // 2. MANAJEMEN KELAS
+        // 3. MANAJEMEN KELAS
         // ============================================
         async function loadClasses() {
             const { data, error } = await supabase
@@ -364,7 +402,6 @@
             
             currentClassId = parseInt(classId);
             
-            // Load siswa
             const { data: studentsData, error: errStudents } = await supabase
                 .from('students')
                 .select('*')
@@ -372,9 +409,8 @@
                 .order('nama_siswa');
             
             if (errStudents) return alert('Gagal load siswa: ' + errStudents.message);
-            students = studentsData;
+            students = studentsData || [];
             
-            // Load nilai
             if (students.length > 0) {
                 const studentIds = students.map(s => s.id);
                 const { data: gradesData, error: errGrades } = await supabase
@@ -387,7 +423,6 @@
                 grades = {};
                 gradesData.forEach(g => {
                     grades[g.student_id] = g;
-                    // Update bobot dari data pertama (asumsi seragam per kelas)
                     bobot = {
                         tugas: g.bobot_tugas || 20,
                         uh: g.bobot_uh || 30,
@@ -406,11 +441,10 @@
         }
         
         // ============================================
-        // 3. MANAJEMEN SISWA
+        // 4. MANAJEMEN SISWA & NILAI
         // ============================================
         async function addStudent() {
             if (!currentClassId) return alert('Pilih kelas terlebih dahulu!');
-            
             const name = document.getElementById('newStudentName').value.trim();
             if (!name) return alert('Nama tidak boleh kosong!');
             
@@ -432,7 +466,6 @@
         
         async function deleteStudent(id) {
             if (!confirm('Hapus siswa ini beserta nilainya?')) return;
-            
             const { error } = await supabase.from('students').delete().eq('id', id);
             if (error) return alert('Gagal: ' + error.message);
             
@@ -441,15 +474,11 @@
             renderTable();
         }
         
-        // ============================================
-        // 4. MANAJEMEN NILAI (Auto-save)
-        // ============================================
         async function updateScore(studentId, field, value) {
             let num = parseFloat(value);
             if (isNaN(num)) num = 0;
             num = Math.max(0, Math.min(100, num));
             
-            const existing = grades[studentId];
             const payload = {
                 student_id: studentId,
                 [field]: num,
@@ -459,16 +488,10 @@
                 bobot_uas: bobot.uas
             };
             
-            const { error } = await supabase
-                .from('grades')
-                .upsert(payload, { onConflict: 'student_id' });
+            const { error } = await supabase.from('grades').upsert(payload, { onConflict: 'student_id' });
+            if (error) return alert('Gagal simpan: ' + error.message);
             
-            if (error) {
-                alert('Gagal simpan: ' + error.message);
-                return;
-            }
-            
-            grades[studentId] = { ...(existing || {}), [field]: num };
+            grades[studentId] = { ...(grades[studentId] || {}), [field]: num };
             renderTable();
         }
         
@@ -489,29 +512,16 @@
                 warning.style.display = 'none';
             }
             
-            // Update bobot di semua nilai siswa yang sudah ada
             if (currentClassId && Object.keys(grades).length > 0) {
                 const studentIds = Object.keys(grades).map(id => parseInt(id));
-                const { error } = await supabase
-                    .from('grades')
-                    .update({ bobot_tugas: t, bobot_uh: u, bobot_uts: s, bobot_uas: a })
-                    .in('student_id', studentIds);
-                
-                if (error) alert('Gagal update bobot: ' + error.message);
+                await supabase.from('grades').update({ bobot_tugas: t, bobot_uh: u, bobot_uts: s, bobot_uas: a }).in('student_id', studentIds);
             }
-            
             renderTable();
         }
         
-        // ============================================
-        // 5. RENDER TABEL
-        // ============================================
         function calculateGrade(student) {
             const g = grades[student.id] || { tugas: 0, uh: 0, uts: 0, uas: 0 };
-            return ((g.tugas * bobot.tugas / 100) + 
-                    (g.uh * bobot.uh / 100) + 
-                    (g.uts * bobot.uts / 100) + 
-                    (g.uas * bobot.uas / 100)).toFixed(2);
+            return ((g.tugas * bobot.tugas / 100) + (g.uh * bobot.uh / 100) + (g.uts * bobot.uts / 100) + (g.uas * bobot.uas / 100)).toFixed(2);
         }
         
         function renderTable() {
@@ -523,7 +533,6 @@
             
             tbody.innerHTML = students.map((s, i) => {
                 const g = grades[s.id] || { tugas: 0, uh: 0, uts: 0, uas: 0 };
-                const nilaiAkhir = calculateGrade(s);
                 return `
                     <tr>
                         <td style="text-align: center;">${i + 1}</td>
@@ -532,15 +541,15 @@
                         <td><input type="number" min="0" max="100" value="${g.uh}" onchange="updateScore(${s.id}, 'uh', this.value)"></td>
                         <td><input type="number" min="0" max="100" value="${g.uts}" onchange="updateScore(${s.id}, 'uts', this.value)"></td>
                         <td><input type="number" min="0" max="100" value="${g.uas}" onchange="updateScore(${s.id}, 'uas', this.value)"></td>
-                        <td class="nilai-akhir">${nilaiAkhir}</td>
-                        <td class="action-cell"><button class="btn btn-danger" onclick="deleteStudent(${s.id})">️</button></td>
+                        <td class="nilai-akhir">${calculateGrade(s)}</td>
+                        <td class="action-cell"><button class="btn btn-danger" onclick="deleteStudent(${s.id})">Hapus</button></td>
                     </tr>
                 `;
             }).join('');
         }
         
         // ============================================
-        // 6. IMPORT/EXPORT EXCEL
+        // 5. IMPORT / EXPORT
         // ============================================
         function handleImport(input) {
             const file = input.files[0];
@@ -556,9 +565,8 @@
                     const workbook = XLSX.read(data, { type: 'array' });
                     const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
                     
-                    if (!confirm(`Import ${jsonData.length} data siswa ke kelas ini? Data lama TIDAK akan dihapus.`)) return;
+                    if (!confirm(`Import ${jsonData.length} data siswa ke kelas ini?`)) return;
                     
-                    // Insert siswa + nilai
                     for (const row of jsonData) {
                         const nama = row['Nama Siswa'] || row['Nama'] || 'Tanpa Nama';
                         const { data: student, error: errS } = await supabase
@@ -579,7 +587,6 @@
                             bobot_uts: bobot.uts, bobot_uas: bobot.uas
                         });
                     }
-                    
                     alert('✅ Import berhasil!');
                     loadClassData();
                 } catch (err) {
@@ -592,7 +599,6 @@
         
         function exportToExcel() {
             if (students.length === 0) return alert('Tidak ada data!');
-            
             const exportData = students.map((s, i) => ({
                 'No': i + 1,
                 'Nama Siswa': s.nama_siswa,
@@ -612,9 +618,6 @@
             XLSX.writeFile(wb, `Rekap_${kelas.replace(/\s+/g, '_')}_${new Date().toISOString().slice(0,10)}.xlsx`);
         }
         
-        // ============================================
-        // 7. UTILITAS
-        // ============================================
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('active');
             document.getElementById('overlay').classList.toggle('active');
@@ -622,8 +625,6 @@
         
         // Inisialisasi
         checkSession();
-        
-        // Enter di login
         document.getElementById('loginPassword').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') handleLogin();
         });
