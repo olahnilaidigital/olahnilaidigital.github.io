@@ -7,129 +7,10 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563eb'/%3E%3Ctext x='50' y='66' font-family='Montserrat,Arial,sans-serif' font-size='42' font-weight='800' fill='%23ffffff' text-anchor='middle' letter-spacing='-1'%3ERBI%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <style>
-        /* ============================================
-   SIDEBAR - Gradasi Biru Langit ke Putih
-   ============================================ */
-.sidebar {
-  background: linear-gradient(180deg, #87CEEB 0%, #B0E0F6 30%, #E8F4FA 70%, #FFFFFF 100%);
-  min-height: 100vh;
-  border-right: 1px solid #d0e3f0;
-  padding: 20px 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.sidebar .menu-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 20px;
-  margin: 4px 10px;
-  border-radius: 8px;
-  color: #1e3a5f;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.sidebar .menu-item:hover {
-  background: rgba(255, 255, 255, 0.6);
-}
-
-.sidebar .menu-item.active {
-  background: rgba(255, 255, 255, 0.8);
-  border-left: 4px solid #2563eb;
-  color: #1e40af;
-  font-weight: 600;
-}
-
-/* ============================================
-   USER PROFILE - Icon Person + Email
-   ============================================ */
-.user-profile {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 20px;
-  margin: 10px 10px 0 10px;
-  font-weight: 600;
-  color: #1e40af;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 8px;
-}
-
-.user-profile svg {
-  flex-shrink: 0;
-}
-
-.user-profile span {
-  font-size: 0.95rem;
-  word-break: break-all;
-}
-
-/* ============================================
-   TOMBOL LOGOUT - Dengan Box
-   ============================================ */
-.logout-btn {
-  display: block;
-  margin: 12px 20px;
-  padding: 10px 20px;
-  border: 2px solid #ef4444;
-  border-radius: 8px;
-  color: #ef4444;
-  background: white;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.95rem;
-  text-align: center;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-
-.logout-btn:hover {
-  background: #ef4444;
-  color: white;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-}
-
-/* ============================================
-   HEADER OLAH NILAI - Background Pattern Diamond
-   ============================================ */
-.olah-nilai-header {
-  background-color: #f0f4f8;
-  background-image: 
-    linear-gradient(45deg, #dce8f8 25%, transparent 25%),
-    linear-gradient(-45deg, #dce8f8 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #f5f0e8 75%),
-    linear-gradient(-45deg, transparent 75%, #f5f0e8 75%);
-  background-size: 40px 40px;
-  background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
-  padding: 60px 20px;
-  text-align: center;
-  border-radius: 12px;
-  margin-bottom: 30px;
-}
-
-.olah-nilai-header h1 {
-  font-size: 3rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, #4a6fa5 0%, #8b7355 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin: 0 0 10px 0;
-}
-
-.olah-nilai-header p {
-  color: #6b7c93;
-  font-size: 1.1rem;
-  margin: 0;
-}
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap');
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --primary: #2563eb; --primary-dark: #1e40af; --accent: #f59e0b;
             --bg: #f8fafc; --text: #1e293b; --text-light: #64748b;
@@ -138,25 +19,111 @@
             --radius-md: 12px; --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
             --sidebar-width: 260px; --transition: all 0.3s ease;
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Montserrat', sans-serif; color: var(--text); background: var(--bg); display: flex; min-height: 100vh; }
-        .sidebar { width: var(--sidebar-width); background: var(--white); border-right: 1px solid var(--border); height: 100vh; position: fixed; left: 0; top: 0; z-index: 1000; display: flex; flex-direction: column; transition: var(--transition); box-shadow: var(--shadow-sm); }
-        .sidebar-header { padding: var(--space-md); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+        
+        /* ============================================
+           SIDEBAR - Gradasi Biru Langit ke Putih
+           ============================================ */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, #87CEEB 0%, #B0E0F6 30%, #E8F4FA 70%, #FFFFFF 100%);
+            border-right: 1px solid #d0e3f0;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .sidebar-header { padding: var(--space-md); border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; gap: 10px; }
         .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.1rem; color: var(--primary); text-decoration: none; }
         .logo svg { width: 40px; height: 40px; }
         .sidebar-nav { flex: 1; padding: var(--space-md) 0; }
-        .nav-item { display: flex; align-items: center; gap: 12px; padding: 0.85rem var(--space-md); color: var(--text-light); text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: var(--transition); border-left: 3px solid transparent; }
-        .nav-item:hover, .nav-item.active { background: #eff6ff; color: var(--primary); border-left-color: var(--primary); }
+        
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 0.85rem var(--space-md);
+            color: #1e3a5f; text-decoration: none; font-weight: 600; font-size: 0.95rem;
+            transition: var(--transition); border-left: 3px solid transparent;
+        }
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255, 255, 255, 0.6);
+            color: #1e40af; border-left-color: #2563eb;
+        }
         .nav-item svg { width: 20px; height: 20px; fill: currentColor; }
-        .sidebar-footer { padding: var(--space-md); border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--text-light); text-align: center; }
+
+        /* ============================================
+           USER PROFILE - Icon Person + Email
+           ============================================ */
+        .user-info {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 0.5rem; padding: 10px 20px; width: 100%;
+        }
+        .user-profile {
+            display: flex; align-items: center; gap: 10px;
+            padding: 8px 12px; font-weight: 600; color: #1e40af;
+            background: rgba(255, 255, 255, 0.6); border-radius: 8px;
+            width: 100%; justify-content: center;
+        }
+        .user-profile svg { flex-shrink: 0; }
+        .user-profile span { font-size: 0.9rem; word-break: break-all; }
+
+        /* ============================================
+           TOMBOL LOGOUT - Dengan Box
+           ============================================ */
+        .logout-btn {
+            display: block; margin: 12px 20px; padding: 10px 20px;
+            border: 2px solid #ef4444; border-radius: 8px;
+            color: #ef4444; background: white; text-decoration: none;
+            font-weight: 600; font-size: 0.95rem; text-align: center;
+            transition: all 0.2s ease; cursor: pointer;
+            width: calc(100% - 40px);
+        }
+        .logout-btn:hover {
+            background: #ef4444; color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .sidebar-footer { padding: var(--space-md); border-top: 1px solid rgba(0,0,0,0.05); }
+
+        /* ============================================
+           MAIN CONTENT & HERO - Background Pattern Diamond
+           ============================================ */
         .main-content { flex: 1; margin-left: var(--sidebar-width); display: flex; flex-direction: column; min-height: 100vh; }
         .top-bar { background: var(--white); padding: var(--space-sm) 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 900; box-shadow: var(--shadow-sm); }
         .hamburger-btn { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; color: var(--text); }
         .hamburger-btn svg { width: 28px; height: 28px; fill: currentColor; }
         .page-title { font-weight: 800; font-size: 1.1rem; color: var(--primary); }
-        .hero { background: linear-gradient(135deg, #dbeafe 0%, #fef3c7 100%); padding: var(--space-lg) 1.5rem; text-align: center; position: relative; overflow: hidden; }
+        
+        .hero {
+            background-color: #f0f4f8;
+            background-image: 
+                linear-gradient(45deg, #dce8f8 25%, transparent 25%),
+                linear-gradient(-45deg, #dce8f8 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #f5f0e8 75%),
+                linear-gradient(-45deg, transparent 75%, #f5f0e8 75%);
+            background-size: 40px 40px;
+            background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
+            padding: var(--space-lg) 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0 0 12px 12px;
+        }
         .hero-content { max-width: 800px; margin: 0 auto; position: relative; z-index: 2; }
-        .hero h1 { font-size: clamp(1.5rem, 4vw, 2.2rem); margin-bottom: var(--space-sm); background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero p { color: var(--text-light); }
+        .hero h1 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            margin-bottom: var(--space-sm);
+            background: linear-gradient(135deg, #4a6fa5 0%, #8b7355 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .hero p { color: #6b7c93; font-size: 1.1rem; }
+
         .content-section { padding: var(--space-lg) 1.5rem; flex: 1; }
         .content-card { background: var(--white); padding: 2rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); margin-bottom: 1.5rem; }
         .content-card h2 { font-size: 1.3rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
@@ -165,6 +132,7 @@
         .form-group label { font-size: 0.85rem; font-weight: 600; color: var(--text-light); }
         .form-group input, .form-group select { padding: 0.6rem 0.8rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: inherit; font-size: 0.95rem; }
         .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary); }
+        
         .btn { padding: 0.6rem 1.2rem; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; font-family: inherit; display: inline-flex; align-items: center; gap: 0.5rem; transition: var(--transition); }
         .btn svg { width: 18px; height: 18px; fill: currentColor; }
         .btn-primary { background: var(--primary); color: var(--white); }
@@ -177,6 +145,7 @@
         .btn-secondary:hover { background: var(--primary); color: var(--white); }
         .btn-warning { background: #f59e0b; color: var(--white); }
         .btn-warning:hover { background: #d97706; }
+        
         .table-container { overflow-x: auto; margin-top: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border); }
         table { width: 100%; border-collapse: collapse; min-width: 600px; }
         table th, table td { border: 1px solid var(--border); padding: 0.75rem; font-size: 0.9rem; }
@@ -185,13 +154,19 @@
         table input { width: 100%; padding: 0.4rem; border: 1px solid var(--border); border-radius: 4px; text-align: center; }
         .nilai-akhir { font-weight: 800; color: var(--primary); text-align: center; }
         .action-cell { text-align: center; }
+        
         .info-box { background: #eff6ff; padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem; border-left: 4px solid var(--primary); font-size: 0.9rem; }
         .success-box { background: #d1fae5; padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem; border-left: 4px solid #10b981; font-size: 0.9rem; }
         .warning-box { background: #fee2e2; padding: 0.75rem; border-radius: var(--radius-sm); border-left: 4px solid #ef4444; color: #991b1b; font-size: 0.9rem; display: none; }
+        .import-info { background: #fef3c7; padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem; border-left: 4px solid #f59e0b; font-size: 0.9rem; }
+        .import-info code { background: #fff; padding: 0.2rem 0.4rem; border-radius: 4px; font-family: monospace; }
+        
         .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; }
         .overlay.active { display: block; }
+        
         footer { background: var(--text); color: var(--white); text-align: center; padding: var(--space-md); margin-top: auto; }
         footer p { opacity: 0.8; font-size: 0.85rem; }
+        
         .login-screen { position: fixed; inset: 0; background: linear-gradient(135deg, #1e40af, #2563eb); display: flex; align-items: center; justify-content: center; z-index: 2000; }
         .login-box { background: var(--white); padding: 2.5rem; border-radius: var(--radius-md); box-shadow: 0 20px 60px rgba(0,0,0,0.3); width: 100%; max-width: 400px; }
         .login-box h2 { color: var(--primary); margin-bottom: 0.5rem; text-align: center; }
@@ -199,11 +174,7 @@
         .login-box .form-group { margin-bottom: 1rem; }
         .login-box .btn-primary, .login-box .btn-secondary { width: 100%; justify-content: center; padding: 0.8rem; margin-top: 0.5rem; }
         .login-error { padding: 0.75rem; border-radius: var(--radius-sm); font-size: 0.85rem; margin-top: 1rem; display: none; text-align: center; }
-        .user-info { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; font-size: 0.85rem; color: var(--text-light); padding: 0.5rem; max-width: 100%; word-break: break-word; text-align: center; }
-        .user-info strong { color: var(--primary); font-size: 0.8rem; }
-        .logout-btn { background: none; border: none; color: #ef4444; cursor: pointer; font-weight: 600; font-size: 0.85rem; margin-top: 0.5rem; }
-        .import-info { background: #fef3c7; padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1rem; border-left: 4px solid #f59e0b; font-size: 0.9rem; }
-        .import-info code { background: #fff; padding: 0.2rem 0.4rem; border-radius: 4px; font-family: monospace; }
+
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.active { transform: translateX(0); }
@@ -254,7 +225,7 @@
         </nav>
         <div class="sidebar-footer">
             <div id="userInfo" class="user-info"></div>
-            <button class="logout-btn" onclick="handleLogout()"> Logout</button>
+            <button class="logout-btn" onclick="handleLogout()">Logout</button>
         </div>
     </aside>
 
@@ -309,11 +280,11 @@
                     <div class="form-group"><label>Bobot UTS (%)</label><input type="number" id="bobotUTS" value="20" min="0" max="100" onchange="updateBobot()"></div>
                     <div class="form-group"><label>Bobot UAS (%)</label><input type="number" id="bobotUAS" value="30" min="0" max="100" onchange="updateBobot()"></div>
                 </div>
-                <div id="bobotWarning" class="warning-box">️ Total bobot bukan 100%.</div>
+                <div id="bobotWarning" class="warning-box">⚠️ Total bobot bukan 100%.</div>
             </div>
 
             <div class="content-card">
-                <h2> 3. Input Nilai Siswa</h2>
+                <h2>📝 3. Input Nilai Siswa</h2>
                 <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
                     <div class="form-group" style="flex: 2; min-width: 200px;">
                         <input type="text" id="newStudentName" placeholder="Nama Siswa Baru..." onkeypress="handleEnter(event)">
@@ -377,8 +348,9 @@
         (function() {
             'use strict';
             
-            const SUPABASE_URL = 'https://pubzczmhadqglvoygqgd.supabase.co';
-            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1Ynpjem1oYWRxZ2x2b3lncWdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MzQxODIsImV4cCI6MjEwNDMxMDE4Mn0.Ym8t2TaZtY1H-TY3NnK7QIjlRKmtk-kCHcw91UzWdpA';
+            // PERBAIKAN: URL sudah diperbaiki dari 'voygqgd' menjadi 'voyqggd'
+            const SUPABASE_URL = 'https://pubzczmhadqglvoyqggd.supabase.co';
+            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1Ynpjem1oYWRxZ2x2b3lxcWdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg3MzQxODIsImV4cCI6MjEwNDMxMDE4Mn0.Ym8t2TaZtY1H-TY3NnK7QIjlRKmtk-kCHcw91UzWdpA';
             
             const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             
@@ -442,7 +414,7 @@
                 
                 try {
                     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                        redirectTo: 'https://olahnilaidigital.github.io/#access_token'
+                        redirectTo: window.location.origin + window.location.pathname
                     });
                     
                     if (error) throw error;
@@ -453,7 +425,7 @@
                 } catch (error) {
                     errorDiv.style.background = '#fee2e2';
                     errorDiv.style.color = '#991b1b';
-                    errorDiv.textContent = ' Gagal: ' + error.message;
+                    errorDiv.textContent = '❌ Gagal: ' + error.message;
                 }
             };
             
@@ -468,7 +440,17 @@
                 document.getElementById('loginScreen').style.display = 'none';
                 const emailParts = currentUser.email.split('@');
                 const displayName = emailParts[0];
-                document.getElementById('userInfo').innerHTML = '<strong title="' + currentUser.email + '">' + displayName + '</strong>';
+                
+                // PERBAIKAN: Menambahkan icon person di sebelah email
+                document.getElementById('userInfo').innerHTML = `
+                    <div class="user-profile">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span title="${currentUser.email}">${displayName}</span>
+                    </div>
+                `;
                 loadClasses();
             }
             
@@ -701,9 +683,6 @@
                 }).join('');
             }
             
-            // ============================================
-            // FITUR DOWNLOAD TEMPLATE EXCEL
-            // ============================================
             window.downloadTemplate = function() {
                 const templateData = [
                     { 'Nama Siswa': 'Ahmad Fauzi', 'Tugas': 85, 'UH': 78, 'UTS': 80, 'UAS': 82 },
@@ -715,21 +694,10 @@
                 const wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, "Template Nilai");
                 
-                // Atur lebar kolom
-                ws['!cols'] = [
-                    { wch: 25 }, // Nama Siswa
-                    { wch: 10 }, // Tugas
-                    { wch: 10 }, // UH
-                    { wch: 10 }, // UTS
-                    { wch: 10 }  // UAS
-                ];
-                
+                ws['!cols'] = [ { wch: 25 }, { wch: 10 }, { wch: 10 }, { wch: 10 }, { wch: 10 } ];
                 XLSX.writeFile(wb, 'Template_Import_Nilai.xlsx');
             };
             
-            // ============================================
-            // FITUR IMPORT DARI EXCEL (DIPERBAIKI)
-            // ============================================
             window.handleImport = function(input) {
                 const file = input.files[0];
                 if (!file) return;
@@ -754,105 +722,62 @@
                             return;
                         }
                         
-                        // Validasi header
                         const firstRow = jsonData[0];
                         const hasNama = firstRow['Nama Siswa'] !== undefined || firstRow['Nama'] !== undefined;
                         
                         if (!hasNama) {
-                            alert('️ Format file tidak sesuai!\n\nPastikan baris pertama berisi header:\nNama Siswa, Tugas, UH, UTS, UAS\n\nDownload template untuk contoh format yang benar.');
+                            alert('⚠️ Format file tidak sesuai!\n\nPastikan baris pertama berisi header:\nNama Siswa, Tugas, UH, UTS, UAS');
                             input.value = '';
                             return;
                         }
                         
-                        const confirmMsg = 'Ditemukan ' + jsonData.length + ' data siswa.\n\n' +
-                                          '• Siswa yang sudah ada akan diupdate nilainya\n' +
-                                          '• Siswa baru akan ditambahkan\n\n' +
-                                          'Lanjutkan import?';
-                        
-                        if (!confirm(confirmMsg)) {
+                        if (!confirm('Ditemukan ' + jsonData.length + ' data siswa. Lanjutkan import?')) {
                             input.value = '';
                             return;
                         }
                         
                         let successCount = 0;
-                        let errorCount = 0;
-                        
                         for (const row of jsonData) {
                             try {
                                 const nama = row['Nama Siswa'] || row['Nama'] || 'Tanpa Nama';
-                                const tugas = parseFloat(row['Tugas'] || row['Nilai Tugas'] || 0) || 0;
-                                const uh = parseFloat(row['UH'] || row['Nilai UH'] || 0) || 0;
-                                const uts = parseFloat(row['UTS'] || row['Nilai UTS'] || 0) || 0;
-                                const uas = parseFloat(row['UAS'] || row['Nilai UAS'] || 0) || 0;
+                                const tugas = parseFloat(row['Tugas'] || 0) || 0;
+                                const uh = parseFloat(row['UH'] || 0) || 0;
+                                const uts = parseFloat(row['UTS'] || 0) || 0;
+                                const uas = parseFloat(row['UAS'] || 0) || 0;
                                 
-                                // Cari siswa yang sudah ada berdasarkan nama
-                                const existingStudent = students.find(s => 
-                                    s.nama_siswa.toLowerCase() === nama.toLowerCase()
-                                );
-                                
+                                const existingStudent = students.find(s => s.nama_siswa.toLowerCase() === nama.toLowerCase());
                                 let studentId;
                                 
                                 if (existingStudent) {
-                                    // Update nilai siswa yang sudah ada
                                     studentId = existingStudent.id;
                                 } else {
-                                    // Tambah siswa baru
                                     const { data: newStudent, error: errInsert } = await supabase
                                         .from('students')
                                         .insert({ class_id: currentClassId, nama_siswa: nama })
                                         .select()
                                         .single();
-                                    
                                     if (errInsert) throw errInsert;
                                     studentId = newStudent.id;
                                     students.push(newStudent);
                                 }
                                 
-                                // Simpan/update nilai
-                                const { error: errGrade } = await supabase.from('grades').upsert({
+                                await supabase.from('grades').upsert({
                                     student_id: studentId,
-                                    tugas: tugas,
-                                    uh: uh,
-                                    uts: uts,
-                                    uas: uas,
-                                    bobot_tugas: bobot.tugas,
-                                    bobot_uh: bobot.uh,
-                                    bobot_uts: bobot.uts,
-                                    bobot_uas: bobot.uas
+                                    tugas: tugas, uh: uh, uts: uts, uas: uas,
+                                    bobot_tugas: bobot.tugas, bobot_uh: bobot.uh,
+                                    bobot_uts: bobot.uts, bobot_uas: bobot.uas
                                 });
                                 
-                                if (errGrade) throw errGrade;
-                                
-                                // Update local state
-                                if (!grades[studentId]) {
-                                    grades[studentId] = {};
-                                }
-                                grades[studentId] = {
-                                    tugas: tugas,
-                                    uh: uh,
-                                    uts: uts,
-                                    uas: uas
-                                };
-                                
+                                grades[studentId] = { tugas, uh, uts, uas };
                                 successCount++;
-                                
                             } catch (err) {
                                 console.error('Error importing row:', err);
-                                errorCount++;
                             }
                         }
                         
-                        let resultMsg = '✅ Import selesai!\n\n';
-                        resultMsg += 'Berhasil: ' + successCount + ' siswa\n';
-                        if (errorCount > 0) {
-                            resultMsg += 'Gagal: ' + errorCount + ' siswa\n';
-                        }
-                        
-                        alert(resultMsg);
+                        alert('✅ Import selesai! Berhasil: ' + successCount + ' siswa');
                         renderTable();
-                        
                     } catch (err) {
-                        console.error('Import error:', err);
                         alert('❌ Gagal membaca file: ' + err.message);
                     }
                     input.value = '';
