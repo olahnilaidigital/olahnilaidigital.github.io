@@ -319,10 +319,17 @@
             };
             
             function showApp() {
-                document.getElementById('loginScreen').style.display = 'none';
-                document.getElementById('userInfo').innerHTML = '👤 <strong>' + currentUser.email + '</strong>';
-                loadClasses();
-            }
+    document.getElementById('loginScreen').style.display = 'none';
+    
+    // Ambil hanya bagian sebelum @ dari email
+    const emailParts = currentUser.email.split('@');
+    const displayName = emailParts[0]; // Hanya "tegarpambuditama48"
+    
+    document.getElementById('userInfo').innerHTML = 
+        '👤 <strong title="' + currentUser.email + '">' + displayName + '</strong>';
+    
+    loadClasses();
+}
             
             window.loadClasses = async function() {
                 const { data, error } = await supabase
