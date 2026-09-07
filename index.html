@@ -21,10 +21,18 @@
             --sidebar-width: 260px; --transition: all 0.3s ease;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Montserrat', sans-serif; color: var(--text); background: var(--bg); display: flex; min-height: 100vh; }
+        html, body { 
+            font-family: 'Montserrat', sans-serif; 
+            color: var(--text); 
+            background: var(--bg); 
+            display: flex; 
+            min-height: 100vh;
+            overflow-x: hidden; /* Mencegah scroll horizontal */
+            width: 100%;
+        }
         
         /* ============================================
-           SIDEBAR - Gradasi Biru Langit ke Putih
+           SIDEBAR
            ============================================ */
         .sidebar {
             width: var(--sidebar-width);
@@ -39,13 +47,11 @@
             flex-direction: column;
             transition: var(--transition);
             box-shadow: var(--shadow-sm);
+            flex-shrink: 0; /* Sidebar tidak mengecil */
         }
         .sidebar-header { padding: var(--space-md); border-bottom: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; gap: 10px; }
         .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.1rem; color: var(--primary); text-decoration: none; }
-        
-        /* PERBAIKAN 1: Ukuran logo diperbesar agar detail "buku hitam" terlihat jelas */
         .logo svg { width: 45px; height: 45px; flex-shrink: 0; }
-        
         .sidebar-nav { flex: 1; padding: var(--space-md) 0; }
         .nav-item {
             display: flex; align-items: center; gap: 12px;
@@ -60,7 +66,7 @@
         .nav-item svg { width: 20px; height: 20px; fill: currentColor; }
 
         /* ============================================
-           USER PROFILE
+           USER PROFILE & LOGOUT
            ============================================ */
         .user-info {
             display: flex; flex-direction: column; align-items: center;
@@ -91,21 +97,30 @@
         .sidebar-footer { padding: var(--space-md); border-top: 1px solid rgba(0,0,0,0.05); }
 
         /* ============================================
-           MAIN CONTENT & HERO (DIPERBAIKI SESUAI ASLI)
+           MAIN CONTENT & HERO
            ============================================ */
-        .main-content { flex: 1; margin-left: var(--sidebar-width); display: flex; flex-direction: column; min-height: 100vh; }
+        .main-content { 
+            flex: 1; 
+            margin-left: var(--sidebar-width); 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
         .top-bar { background: var(--white); padding: var(--space-sm) 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 900; box-shadow: var(--shadow-sm); }
         .hamburger-btn { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; color: var(--text); }
         .hamburger-btn svg { width: 28px; height: 28px; fill: currentColor; }
         .page-title { font-weight: 800; font-size: 1.1rem; color: var(--primary); }
         
-        /* PERBAIKAN 2: Background Hero dikembalikan ke desain asli RBI */
         .hero {
             background: linear-gradient(135deg, #dbeafe 0%, #fef3c7 100%);
             padding: var(--space-xl) 1.5rem;
             text-align: center;
             position: relative;
             overflow: hidden;
+            width: 100%;
         }
         .hero::before {
             content: '';
@@ -143,8 +158,55 @@
             font-size: clamp(1rem, 2vw, 1.2rem);
         }
 
-        .content-section { padding: var(--space-lg) 1.5rem; flex: 1; }
-        .content-card { background: var(--white); padding: 2rem; border-radius: var(--radius-md); box-shadow: var(--shadow-sm); border: 1px solid var(--border); margin-bottom: 1.5rem; }
+        /* ============================================
+           RUNNING TEXT / MARQUEE (DIPERBAIKI)
+           ============================================ */
+        .marquee-wrapper {
+            background: #eff6ff;
+            border-top: 1px solid #bfdbfe;
+            border-bottom: 1px solid #bfdbfe;
+            overflow: hidden; /* Penting: menyembunyikan overflow */
+            width: 100%;
+            position: relative;
+            z-index: 2;
+            white-space: nowrap;
+        }
+        .marquee-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll-left 30s linear infinite;
+            color: #1e40af;
+            font-weight: 600;
+            font-size: 0.95rem;
+            line-height: 2.5rem;
+            white-space: nowrap;
+        }
+        .marquee-wrapper:hover .marquee-content {
+            animation-play-state: paused;
+        }
+        @keyframes scroll-left {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* ============================================
+           CONTENT CARDS & TABLES
+           ============================================ */
+        .content-section { 
+            padding: var(--space-lg) 1.5rem; 
+            flex: 1; 
+            width: 100%;
+            max-width: 100%;
+        }
+        .content-card { 
+            background: var(--white); 
+            padding: 2rem; 
+            border-radius: var(--radius-md); 
+            box-shadow: var(--shadow-sm); 
+            border: 1px solid var(--border); 
+            margin-bottom: 1.5rem;
+            width: 100%;
+        }
         .content-card h2 { font-size: 1.3rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
         .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
         .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
@@ -183,7 +245,7 @@
         .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; }
         .overlay.active { display: block; }
         
-        footer { background: var(--text); color: var(--white); text-align: center; padding: var(--space-md); margin-top: auto; }
+        footer { background: var(--text); color: var(--white); text-align: center; padding: var(--space-md); margin-top: auto; width: 100%; }
         footer p { opacity: 0.8; font-size: 0.85rem; }
         
         .login-screen { position: fixed; inset: 0; background: linear-gradient(135deg, #1e40af, #2563eb); display: flex; align-items: center; justify-content: center; z-index: 2000; }
@@ -197,10 +259,12 @@
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.active { transform: translateX(0); }
-            .main-content { margin-left: 0; }
+            .main-content { margin-left: 0; width: 100%; }
             .hamburger-btn { display: block; }
-            .content-card { padding: 1.25rem; }
+            .content-card { padding: 1.25rem; width: 100%; }
             .form-grid { grid-template-columns: 1fr; }
+            .marquee-content { font-size: 0.85rem; }
+            .hero { padding: var(--space-lg) 1rem; }
         }
     </style>
 </head>
@@ -234,7 +298,6 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="#" class="logo">
-                <!-- PERBAIKAN 1: SVG Logo RBI Asli dengan detail "Buku Hitam" di bagian bawah -->
                 <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-label="RBI Logo">
                     <defs>
                         <linearGradient id="bL" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -250,7 +313,6 @@
                     <path d="M415 90 Q415 78 403 84 L254 162 L254 190 L370 242 L370 370 L254 420 Q245 424 254 431 L403 414 Q415 412 415 400 Z" fill="url(#bR)"/>
                     <path d="M130 242 L250 190 L370 242 L370 370 L250 415 L130 370 Z" fill="#FFF"/>
                     <text x="250" y="290" text-anchor="middle" font-family="'Montserrat',sans-serif" font-size="80" font-weight="800" letter-spacing="4" fill="#102D68">RBI</text>
-                    <!-- Bagian Buku Hitam -->
                     <path d="M165 335 Q205 338 244 360 L244 400 Q205 376 165 373 Z" fill="#102D68"/>
                     <path d="M335 335 Q295 338 256 360 L256 400 Q295 376 335 373 Z" fill="#102D68"/>
                     <path d="M250 358 L250 404" stroke="#FFF" stroke-width="5" stroke-linecap="round"/>
@@ -260,29 +322,31 @@
         </div>
         <nav class="sidebar-nav">
             <a href="#" class="nav-item active">📊 Dashboard Nilai</a>
-            <a href="#" class="nav-item">📋 Rekap Siswa</a>
+            <a href="#" class="nav-item">📝 Rekap Siswa</a>
         </nav>
         <div class="sidebar-footer">
             <div id="userInfo" class="user-info"></div>
-            <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            <button class="logout-btn" onclick="handleLogout()">L o g o u t</button>
         </div>
     </aside>
 
     <main class="main-content">
-        <header class="top-bar">
-            <button class="hamburger-btn" onclick="toggleSidebar()">
-                <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
-            </button>
-            <div class="page-title">Alat Bantu Olah Nilai</div>
-            <div style="width: 28px;"></div>
-        </header>
-
         <section class="hero">
             <div class="hero-content">
                 <h1>Olah Nilai Murid</h1>
                 <p>Data tersimpan otomatis di cloud. Akses dari mana saja, kapan saja.</p>
             </div>
         </section>
+
+        <!-- RUNNING TEXT / MARQUEE (DIPERBAIKI) -->
+        <div class="marquee-wrapper">
+            <div class="marquee-content">
+                📢 Selamat datang di Aplikasi Olah Nilai Digital! &nbsp;|&nbsp; 
+                💡 Tips: Gunakan fitur "Download Template Excel" untuk format input data yang benar. &nbsp;|&nbsp; 
+                ⚠️ Pastikan total bobot nilai selalu 100% sebelum menyimpan. &nbsp;|&nbsp; 
+                📢 Data Anda otomatis tersimpan aman di cloud Supabase.
+            </div>
+        </div>
 
         <section class="content-section">
             <div class="content-card">
@@ -295,16 +359,16 @@
                                 <option value="">-- Pilih kelas --</option>
                             </select>
                             <button class="btn btn-danger" onclick="deleteClass()" title="Hapus kelas yang dipilih" style="white-space: nowrap;">
-                                🗑️ Hapus
+                                Hapus
                             </button>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Tambah Kelas Baru</label>
                         <div style="display: flex; gap: 0.5rem;">
-                            <input type="text" id="newClassName" placeholder="Nama kelas (cth: 9B)">
+                            <input type="text" id="newClassName" placeholder="Nama kelas (contoh: 8G)">
                             <input type="text" id="newClassSubject" placeholder="Mapel" style="flex: 1;">
-                            <button class="btn btn-primary" onclick="addClass()">+</button>
+                            <button class="btn btn-primary" onclick="addClass()">&#10010</button>
                         </div>
                     </div>
                 </div>
@@ -328,7 +392,7 @@
                     <div class="form-group" style="flex: 2; min-width: 200px;">
                         <input type="text" id="newStudentName" placeholder="Nama Siswa Baru..." onkeypress="handleEnter(event)">
                     </div>
-                    <button class="btn btn-primary" onclick="addStudent()">➕ Tambah Siswa</button>
+                    <button class="btn btn-primary" onclick="addStudent()">&#10010 Tambah Siswa</button>
                 </div>
 
                 <div class="table-container">
@@ -356,7 +420,7 @@
                 <h2>💾 4. Import & Ekspor Excel</h2>
                 
                 <div class="import-info">
-                    <strong>📋 Format File Excel untuk Import:</strong><br>
+                    <strong> Format File Excel untuk Import:</strong><br>
                     Baris pertama harus berisi header: <code>Nama Siswa</code>, <code>Tugas</code>, <code>UH</code>, <code>UTS</code>, <code>UAS</code><br>
                     <br>
                     <strong>Contoh:</strong><br>
@@ -679,7 +743,7 @@
                 const warning = document.getElementById('bobotWarning');
                 if (total !== 100) {
                     warning.style.display = 'block';
-                    warning.textContent = '⚠️ Total bobot = ' + total + '%. Harus 100%.';
+                    warning.textContent = '️ Total bobot = ' + total + '%. Harus 100%.';
                 } else {
                     warning.style.display = 'none';
                 }
